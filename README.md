@@ -1,6 +1,7 @@
 
 
-Created BY ML187
+recreated BY ML187 --- ORIGINAL AUTHOR nitrou5 originally called qb-vehicle-tracker
+https://github.com/nitrou5?tab=overview&from=2024-12-01&to=2024-12-31
 a Vehicle Tracking script to keep track of all your cars!!!
 NOW ALLOWS ONE TABLET TO TRACK ALL PLAYERS CARS
 
