@@ -1,7 +1,6 @@
 local utils = {}
 local db = {}
 
--- Database functions
 function db.deleteOldTrackers()
     return MySQL.query.await('DELETE FROM `vehicle_trackers` WHERE startedAt < (NOW() - INTERVAL ? DAY)', {Config.TrackerLifespan})
 end
@@ -22,12 +21,10 @@ function db.isTracked(vehiclePlate)
     return MySQL.scalar.await('SELECT `serialNumber` FROM `vehicle_trackers` WHERE `vehiclePlate` = ? LIMIT 1', {vehiclePlate})
 end
 
--- New function to get all active trackers
 function db.getAllTrackers()
     return MySQL.query.await('SELECT `serialNumber`, `vehiclePlate` FROM `vehicle_trackers`')
 end
 
--- Utility functions
 function utils.getRandomSerialNumber()
     return lib.string.random('...........')
 end
@@ -54,16 +51,12 @@ function utils.isPlayerNearVehicle(playerCoords, vehiclePlate)
     return true
 end
 
--- QBX Usable Items
 exports.qbx_core:CreateUseableItem(Config.Items.tracker, function(source, item)
     TriggerClientEvent('vehicle_tracker:client:placeTracker', source, item.info?.slot or item.slot, utils.getRandomSerialNumber())
 end)
 
--- Modified tablet usage to show all tracked vehicles
 exports.qbx_core:CreateUseableItem(Config.Items.tablet, function(source, item)
-    -- Get all trackers from the database
     local trackers = db.getAllTrackers()
-    -- Send the list of trackers to the client
     TriggerClientEvent('vehicle_tracker:client:openTrackerTablet', source, trackers)
 end)
 
@@ -71,14 +64,12 @@ exports.qbx_core:CreateUseableItem(Config.Items.scanner, function(source, item)
     TriggerClientEvent('vehicle_tracker:client:scanTracker', source, item.info?.slot or item.slot)
 end)
 
--- Event Handler
 AddEventHandler('onResourceStart', function(resourceName)
     if cache.resource == resourceName then
         db.deleteOldTrackers()
     end
 end)
 
--- Callbacks
 lib.callback.register('vehicle_tracker:getTrackedVehicleBySerial', function(_, serialNumber)
     if type(serialNumber) ~= "string" or string.len(serialNumber) < 11 then return end
     
@@ -102,7 +93,6 @@ lib.callback.register('vehicle_tracker:isVehicleTracked', function(source, vehic
     return db.isTracked(utils.trim(vehiclePlate))
 end)
 
--- Modified to not give a tablet when placing a tracker
 lib.callback.register('vehicle_tracker:placeTracker', function(source, vehiclePlate, slot, serialNumber)
     if type(vehiclePlate) ~= "string" or type(serialNumber) ~= "string" or string.len(serialNumber) < 11 then return false end
     if not utils.isPlayerNearVehicle(GetEntityCoords(GetPlayerPed(source)), vehiclePlate) then return false end
