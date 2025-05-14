@@ -4,6 +4,7 @@ recreated BY ML187 --- ORIGINAL AUTHOR nitrou5 originally called qb-vehicle-trac
 https://github.com/nitrou5?tab=overview&from=2024-12-01&to=2024-12-31
 a Vehicle Tracking script to keep track of all your cars!!!
 NOW ALLOWS ONE TABLET TO TRACK ALL PLAYERS CARS
+UPDATED SQL AND CONFIG IS FAR MORE AHEAD THEN ORIGINAL
 
 ## Dependencies
 - [ox_lib](https://github.com/overextended/ox_lib)
