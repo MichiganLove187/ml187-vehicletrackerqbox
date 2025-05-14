@@ -1,7 +1,6 @@
 local trackedVehicles = {}
 
 
--- Functions
 local function uiNotify(description, nType)
     lib.notify({
         description = description, 
@@ -54,7 +53,6 @@ local function createTrackerBlip(coords, plate, serialNumber)
     return blip
 end
 
--- New event to handle the tablet with multiple trackers
 RegisterNetEvent('vehicle_tracker:client:openTrackerTablet', function(trackers)
     if #trackers == 0 then
         return uiNotify('No active trackers found.', 'error')
@@ -88,7 +86,6 @@ RegisterNetEvent('vehicle_tracker:client:openTrackerTablet', function(trackers)
     end
 end)
 
--- Events
 RegisterNetEvent('vehicle_tracker:client:manageTracker', function(serialNumber)
     lib.registerContext({
         id = 'vt_menu',
@@ -228,12 +225,10 @@ RegisterNetEvent('vehicle_tracker:client:locateTracker', function(serialNumber)
             return 
         end
         
-        -- Remove existing blip if there is one
         if trackedVehicles[serialNumber] then
             RemoveBlip(trackedVehicles[serialNumber])
         end
         
-        -- Create new blip
         createTrackerBlip(vehCoords, veh, serialNumber)
         
         playSound(Config.Sounds.locate)
@@ -241,7 +236,6 @@ RegisterNetEvent('vehicle_tracker:client:locateTracker', function(serialNumber)
     end, serialNumber)
 end)
 
--- Thread to fade out blips over time
 CreateThread(function()
     while true do
         Wait(3000)
